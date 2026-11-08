@@ -1,0 +1,73 @@
+# Render Blueprint for the ReconPay AI demo.
+#
+# Architecture:
+#   Render web service (Next.js)
+#   + Supabase PostgreSQL (transaction pooler for the app, session/direct for migrations)
+#   + private Supabase Storage bucket for documents
+#   + PayPal sandbox REST app for the USD payment demo
+#
+# Create the Supabase project, private bucket and PayPal app first. Then use
+# Render Dashboard -> New -> Blueprint and fill the prompted secrets.
+# Full walkthrough: docs/RENDER.md
+
+services:
+  - type: web
+    name: reconpay-ai
+    runtime: node
+    plan: free
+    region: singapore
+    buildCommand: npm ci && npm run build
+    startCommand: npm run start
+    healthCheckPath: /api/health
+    autoDeployTrigger: commit
+    initialDeployHook: npm run db:seed
+    envVars:
+      - key: NODE_VERSION
+        value: 24.22.0
+
+      # Render supplies the final onrender.com URL. If you add a custom domain,
+      # replace this with the exact HTTPS origin after the domain is live.
+      - key: APP_URL
+        fromService:
+          name: reconpay-ai
+          type: web
+          envVarKey: RENDER_EXTERNAL_URL
+
+      - key: AUTH_SECRET
+        generateValue: true
+      - key: APP_ENCRYPTION_KEY
+        generateValue: true
+
+      # Public demo only. This makes the seeded demo credentials visible and
+      # allows the one-time Render seed hook to run. Do not use with real data.
+      - key: DEMO_MODE
+        value: "true"
+      - key: ALLOW_DEMO_SEED
+        value: "true"
+
+      # Supabase app connection: transaction pooler, port 6543, sslmode=require.
+      - key: DATABASE_URL
+        sync: false
+      # Supabase direct/session connection for DDL, port 5432.
+      - key: MIGRATION_DATABASE_URL
+        sync: false
+      - key: RUN_MIGRATIONS
+        value: "true"
+
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: SUPABASE_STORAGE_BUCKET
+        value: reconpay-evidence
+
+      - key: PAYPAL_ENV
+        value: sandbox
+      - key: PAYPAL_CLIENT_ID
+        sync: false
+      - key: PAYPAL_CLIENT_SECRET
+        sync: false
+      # You can enter "pending" during the first deploy and replace it after
+      # registering the webhook URL in PayPal.
+      - key: PAYPAL_WEBHOOK_ID
+        sync: false
