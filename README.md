@@ -11,7 +11,7 @@ The product is intentionally conservative about money and automation:
 
 ## Verified status
 
-Last verified in this workspace on 7 November 2026:
+Last verified in this workspace on 8 November 2026:
 
 | Check | Result |
 | --- | --- |
