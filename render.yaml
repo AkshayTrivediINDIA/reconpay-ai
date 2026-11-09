@@ -48,6 +48,11 @@ services:
       # Supabase app connection: transaction pooler, port 6543, sslmode=require.
       - key: DATABASE_URL
         sync: false
+      # Keep this at or above the largest number of concurrent queries in a
+      # page. postgres-js can stall when more queries are queued than the pool
+      # can open, especially through Supabase's transaction pooler.
+      - key: DB_POOL_MAX
+        value: "20"
       # Supabase direct/session connection for DDL, port 5432.
       - key: MIGRATION_DATABASE_URL
         sync: false

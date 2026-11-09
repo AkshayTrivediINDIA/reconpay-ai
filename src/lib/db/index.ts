@@ -59,7 +59,7 @@ async function initState(): Promise<DatabaseState> {
       await runPostgresMigrations(databaseUrl);
     }
     const client = postgres(databaseUrl, {
-      max: 10,
+      max: Number(process.env.DB_POOL_MAX ?? 20),
       idle_timeout: 20,
       connect_timeout: 15,
       prepare: false,
