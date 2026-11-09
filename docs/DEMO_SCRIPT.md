@@ -9,12 +9,12 @@ invoice -> deterministic three-way match -> evidence -> approval
 
 ## Before the call
 
-- [ ] Wake the Render service by opening the URL once. Free services cold-start.
-- [ ] Wake the Supabase project so the database and bucket are responsive.
+- [ ] **Live demo URL:** <https://reconpay-ai.onrender.com> — open once to wake the free Render service (cold-start ~50s).
+- [ ] Supabase project is already awake (ap-south-1).
 - [ ] Sign in as `admin@demo.reconpay.ai` / `ReconPay!2026`.
 - [ ] Confirm the organisation switcher is on **ReconPay Demo (INR)**.
-- [ ] Run **Settings → Integration connectivity → PayPal → Test connection**.
-- [ ] Have the PayPal sandbox buyer account ready.
+- [ ] Run **Settings → Integration connectivity → PayPal → Test connection** (shows "configured · sandbox").
+- [ ] PayPal sandbox buyer: `sb-injib53177998@personal.example.com` / `ReconPay!2026` (US personal, $5,000 balance).
 - [ ] Use a desktop window; keep the final demo URL visible.
 - [ ] For a local demo, run `npm run db:reset` before starting if the seed was
       changed by a previous run.

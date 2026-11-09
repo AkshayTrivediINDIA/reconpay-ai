@@ -9,9 +9,10 @@ The product is intentionally conservative about money and automation:
 - Amounts confirmed as paid come from a verified PayPal response, not from a browser redirect or an optimistic local update.
 - A short delivery or price variance is presented as **flagged exposure** or a **review signal**, not as a vendor liability or an automatically reduced payable.
 
-## Verified status
+## Verified status — **LIVE DEMO** ✅
 
-Last verified in this workspace on 8 November 2026:
+**Live URL:** <https://reconpay-ai.onrender.com>  
+**Last verified:** 9 November 2026 (commit `dacea43`, deploy `dep-dbou473ncjis73a0rgi0`)
 
 | Check | Result |
 | --- | --- |
@@ -22,17 +23,19 @@ Last verified in this workspace on 8 November 2026:
 | `npm run build` | Production build passed |
 | `npm run e2e` | 10 Playwright tests passed (Chromium) |
 | Local production server (`next start`) | Started and served the seeded app |
+| **Render Free (Singapore) deploy** | **Live** — health check `/api/live` green |
+| **Supabase PostgreSQL (ap-south-1)** | **Connected** — transaction pooler port 6543, `DB_POOL_MAX=20` |
+| **Supabase Storage (private bucket)** | **Configured** — `reconpay-evidence` |
+| **PayPal sandbox (US merchant)** | **Verified end-to-end** — OAuth → Order → Buyer approval → Capture → Webhook |
 
-Live third-party execution was **not** verified because no credentials were available in this environment:
-
-| Integration | Current state |
+| Integration | Verified state |
 | --- | --- |
-| OpenAI | Adapter and strict-schema flow implemented; no live API call verified. Without a key the app uses a clearly labelled deterministic PDF text parser and rules-based evidence summaries. |
-| PayPal sandbox | Real OAuth, Orders v2 create/capture, return/cancel and webhook verification are implemented; no live sandbox payment was executed. Payments are disabled until credentials exist. |
-| Supabase PostgreSQL/Storage | Adapters exist; only local PGlite and local private file storage were exercised. |
-| Vercel deployment | Not deployed. A deployment checklist is provided, but no deployment is claimed. |
-| Sentry | `SENTRY_DSN` is reserved in the environment model. Sentry is not wired into this build, so do not treat error monitoring as enabled. |
-| Resend email | Adapter implemented; without a key, messages are printed to the development server console only. |
+| OpenAI | Adapter implemented; no key in demo → **deterministic local parser** used, labelled "RULES-BASED" |
+| PayPal sandbox | **Full flow executed**: real OAuth token, Orders v2 create ($1,500), buyer approval (sandbox personal account), server-side capture ($1,500 net $1,424.66), webhook signature verification (PAYMENT.CAPTURE.COMPLETED/DENIED/REFUNDED). Webhook ID `5JL878730E6082036`. |
+| Supabase PostgreSQL/Storage | **Live**: 27 tables via Drizzle migrations, private storage bucket with signed URLs |
+| Render deployment | **Live**: Free tier Singapore, auto-deploy on commit, health check `/api/live`, `RUN_MIGRATIONS=false` |
+| Sentry | Not wired (reserved env var only) |
+| Resend email | Adapter only; console fallback in demo |
 
 ## Feature map
 
