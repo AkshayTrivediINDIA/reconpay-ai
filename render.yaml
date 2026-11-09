@@ -51,8 +51,11 @@ services:
       # Supabase direct/session connection for DDL, port 5432.
       - key: MIGRATION_DATABASE_URL
         sync: false
+      # Run Drizzle migrations once before the first deploy (or from the
+      # Render Shell). Keeping this false avoids blocking the health check on
+      # every cold start.
       - key: RUN_MIGRATIONS
-        value: "true"
+        value: "false"
 
       - key: SUPABASE_URL
         sync: false
