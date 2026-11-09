@@ -272,16 +272,48 @@ export async function testIntegration(
   return { connected, message };
 }
 
+async function withHealthTimeout<T>(
+  promise: Promise<T>,
+  ms: number,
+  message: string,
+): Promise<T> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  try {
+    return await Promise.race([
+      promise,
+      new Promise<never>((_resolve, reject) => {
+        timer = setTimeout(() => reject(new Error(message)), ms);
+      }),
+    ]);
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
+}
+
 export async function getHealthStatus() {
-  const db = await getDb();
+  let db: Awaited<ReturnType<typeof getDb>> | null = null;
   let databaseOk = false;
   let error: string | null = null;
+  const startedAt = Date.now();
   try {
-    await db.execute(sql`select 1`);
+    db = await withHealthTimeout(
+      getDb(),
+      10_000,
+      "Database initialization timed out after 10 seconds",
+    );
+    await withHealthTimeout(
+      db.execute(sql`select 1`),
+      10_000,
+      "Database query timed out after 10 seconds",
+    );
     databaseOk = true;
   } catch (caught) {
     error = caught instanceof Error ? caught.message : "Database check failed";
+    console.error("[health] database check failed", caught);
   }
+  console.log(
+    `[health] database=${databaseOk ? "ok" : "error"} in ${Date.now() - startedAt}ms`,
+  );
   const databaseInfo = await getDatabaseInfo();
   return {
     ok: databaseOk,

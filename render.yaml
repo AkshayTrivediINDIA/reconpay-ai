@@ -18,7 +18,7 @@ services:
     region: singapore
     buildCommand: npm ci && npm run build
     startCommand: npm run start
-    healthCheckPath: /api/health
+    healthCheckPath: /api/live
     autoDeployTrigger: commit
     initialDeployHook: npm run db:seed
     envVars:
