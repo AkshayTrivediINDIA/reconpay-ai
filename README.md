@@ -45,7 +45,7 @@ The product is intentionally conservative about money and automation:
 - Invoice upload with magic-byte validation, private storage, source SHA-256 hashes, deterministic local PDF text extraction, optional OpenAI structured extraction, human verification, duplicate detection and line-item editing.
 - Purchase orders and goods receipts with exact quantities, damaged quantities, inspection state and vendor/PO matching.
 - Versioned deterministic reconciliation rules with stored run snapshots, source references, open/resolved/disputed findings, evidence events and timelines.
-- Evidence centre with human-readable reports and generated PDF evidence packs.
+- Evidence centre with human-readable reports and professional PDF evidence packs: brand cover, auto-generated contents, exact quantity/amount tables, discrepancy cards, timeline, document control block with SHA-256 content fingerprint, page numbering and per-page timestamps (IBM Plex typography, embedded and subset).
 - Settlement proposals, submit/approve, finance approval limits, vendor acceptance/clarification links, ready-for-payment gate and payment history.
 - PayPal sandbox payment initiation, provider redirect, server-side capture, webhook signature verification, provider-event idempotency and server-side amount/currency checks.
 - Reports for invoices, discrepancies, reconciliation, settlements, payments and audit; CSV export with UTF-8 BOM and spreadsheet-formula neutralisation.

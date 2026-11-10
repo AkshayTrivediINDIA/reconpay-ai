@@ -29,6 +29,7 @@
   "dependencies": {
     "@electric-sql/pglite": "^0.5.15",
     "@hookform/resolvers": "^7.0.3",
+    "@pdf-lib/fontkit": "1.1.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.4.0",

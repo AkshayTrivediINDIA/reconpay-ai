@@ -32,10 +32,10 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
-  serverExternalPackages: ["@electric-sql/pglite", "pdfjs-dist"],
+  serverExternalPackages: ["@electric-sql/pglite", "pdfjs-dist", "@pdf-lib/fontkit"],
   poweredByHeader: false,
   outputFileTracingIncludes: {
-    "/**": ["./drizzle/**/*"],
+    "/**": ["./drizzle/**/*", "./src/lib/reports/fonts/**/*"],
   },
   async headers() {
     return [{ source: "/(.*)", headers: securityHeaders }];

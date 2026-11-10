@@ -13,6 +13,7 @@ import type { AuthContext } from "@/lib/auth/rbac";
 import { isVendor, requirePermission } from "@/lib/auth/rbac";
 import { actorFromContext, recordEvidenceEvent, writeAudit } from "@/lib/audit";
 import { ForbiddenError, NotFoundError } from "@/lib/errors";
+import { env } from "@/lib/env";
 import { generateEvidenceSummary, type EvidenceSummaryInput } from "@/lib/ai";
 import { formatMinorPlain, formatQuantityPlain } from "@/lib/money";
 import { buildEvidencePdf } from "@/lib/reports/pdf";
@@ -189,11 +190,15 @@ export async function createEvidencePdf(
   const po = detail.purchaseOrder!;
   const bytes = await buildEvidencePdf({
     organizationName: ctx.organization.name,
+    organizationIsDemo: ctx.organization.isDemo,
+    appUrl: env.appUrl,
     invoiceNumber: invoice.invoiceNumber,
+    invoiceTotalMinor: invoice.totalMinor,
     vendorName: detail.vendor?.name ?? invoice.vendorNameRaw ?? "Unknown vendor",
     poNumber: po.poNumber,
     receiptNumbers: detail.receipts.map((receipt) => receipt.receiptNumber),
     currency: invoice.currency,
+    runStatus: detail.run.status,
     report,
     discrepancies: detail.discrepancies,
     timeline: detail.timeline,

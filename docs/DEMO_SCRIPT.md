@@ -104,7 +104,10 @@ Point out:
 - source references to the PO and goods receipt;
 - exact integer minor units and milli-unit quantities;
 - rule version/snapshot stored with the run;
-- **Download evidence PDF**.
+- **Download evidence PDF** — a multi-page pack with brand cover, contents,
+  quantity and amount tables, discrepancy cards, timeline and a document
+  control block (report/run IDs, generation timestamps and a SHA-256 content
+  fingerprint). Every page carries the app footer and "Page x of y".
 
 Optionally open **Discrepancies** and show that a finding can be resolved or
 disputed with a reason, and the action is audited.
