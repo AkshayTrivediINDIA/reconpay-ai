@@ -66,8 +66,9 @@ export function AppShell({
   async function logout() {
     try {
       await apiFetch("/api/auth/logout", { method: "POST", body: "{}" });
-      router.push("/login");
-      router.refresh();
+      // Full navigation clears every client-side cache entry, so the next
+      // sign-in cannot reuse the previous account's rendered shell.
+      window.location.assign("/login");
     } catch (error) {
       toast({
         tone: "error",

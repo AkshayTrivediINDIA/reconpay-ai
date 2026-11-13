@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -16,7 +15,6 @@ import { loginRequestSchema } from "@/lib/validation";
 type FormValues = z.infer<typeof loginRequestSchema>;
 
 export function LoginForm({ next }: { next?: string }) {
-  const router = useRouter();
   const { toast } = useToast();
   const [serverError, setServerError] = useState<string | null>(null);
   const {
@@ -37,8 +35,10 @@ export function LoginForm({ next }: { next?: string }) {
         body: JSON.stringify(values),
       });
       toast({ tone: "success", title: "Signed in" });
-      router.push(next || "/dashboard");
-      router.refresh();
+      // Full navigation instead of router.push: guarantees the server-rendered
+      // shell is re-fetched for the account that just signed in, so a cached
+      // layout can never show the previous user.
+      window.location.assign(next || "/dashboard");
     } catch (error) {
       setServerError(error instanceof Error ? error.message : "Sign-in failed");
     }

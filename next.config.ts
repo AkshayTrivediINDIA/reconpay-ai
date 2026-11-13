@@ -34,6 +34,12 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   serverExternalPackages: ["@electric-sql/pglite", "pdfjs-dist", "@pdf-lib/fontkit"],
   poweredByHeader: false,
+  compress: true,
+  // Keeps the client bundle lean: only the icons/helpers actually imported are
+  // pulled in, instead of whole package barrels.
+  experimental: {
+    optimizePackageImports: ["lucide-react", "date-fns"],
+  },
   outputFileTracingIncludes: {
     "/**": ["./drizzle/**/*", "./src/lib/reports/fonts/**/*"],
   },
